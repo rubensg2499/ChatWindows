@@ -98,7 +98,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // Almacenar identificador de instancia en una variable global
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+      CW_USEDEFAULT, CW_USEDEFAULT, 
+	  327, 435, 
+	  nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
@@ -123,8 +125,32 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	static HWND txtE;
+	static HWND txtR;
+	static HWND txtIP;
+	static HWND btnEnviar;
     switch (message)
     {
+	case WM_CREATE: {
+		LoadLibrary(L"riched20.dll");
+		txtR = CreateWindowEx(WS_EX_CLIENTEDGE, RICHEDIT_CLASS, L"", WS_CHILD |
+			WS_VISIBLE | WS_VSCROLL | WS_HSCROLL | ES_MULTILINE |
+			ES_AUTOVSCROLL | ES_AUTOHSCROLL | WS_BORDER, 5, 0, 300, 300,
+			hWnd, (HMENU)ID_TXT_R, hInst, NULL);
+
+		txtE = CreateWindow(L"EDIT", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP,
+			5, 160+150, 300, 25, 
+			hWnd, (HMENU)ID_TXT_E, hInst,NULL);
+
+		txtIP = CreateWindow(L"EDIT", L"", WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP,
+			5, 195+150, 200, 25,
+			hWnd, (HMENU)ID_TXT_IP, hInst, NULL);
+
+		btnEnviar = CreateWindow(L"BUTTON", L"Enviar", WS_VISIBLE | WS_CHILD | WS_BORDER | WS_TABSTOP,
+			210, 195+150, 95, 25,
+			hWnd, (HMENU)ID_BTN_ENVIAR, hInst, NULL);
+		break;
+	}
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -137,6 +163,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             case IDM_EXIT:
                 DestroyWindow(hWnd);
                 break;
+			case ID_BTN_ENVIAR:
+				DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+				break;
             default:
                 return DefWindowProc(hWnd, message, wParam, lParam);
             }

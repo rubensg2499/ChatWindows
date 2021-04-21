@@ -12,6 +12,10 @@
 #define IDI_CHATWINDOWS			107
 #define IDI_SMALL				108
 #define IDC_CHATWINDOWS			109
+#define ID_TXT_R				111
+#define ID_TXT_E				112
+#define ID_TXT_IP				113
+#define ID_BTN_ENVIAR			114
 #define IDC_MYICON				2
 #ifndef IDC_STATIC
 #define IDC_STATIC				-1
